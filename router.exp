@@ -1,0 +1,12 @@
+#!/usr/bin/expect
+set timeout -1
+set username "xxx"
+set password "xxx"
+spawn telnet 192.168.90.1
+expect {
+    "H3C login:" {send "$username\r"; exp_continue}
+    "Password:" {send "$password\r"; exp_continue}
+    "<H3C>" {send "reboot\r";exp_continue}    
+    "Y" {send "Y\r"}
+}
+expect eof
