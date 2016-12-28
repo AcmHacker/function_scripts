@@ -5,6 +5,7 @@ require 'nokogiri'
 def search ip, username, password
   url = "http://#{ip}/"
   browser = Watir::Browser.new(:chrome)
+  # browser = Watir::Browser.new(:phantomjs)
   browser.goto(url)
 
   browser.alert.ok if browser.alert.exists?
@@ -21,25 +22,46 @@ def search ip, username, password
   end
 
   mac_address = []
+  rates = []
   doc = Nokogiri::HTML.parse(browser.html)
   doc.css('input').select do |item|
+    # puts item
     item.attribute('type').to_s == 'radio'
   end.each do |item|
-    mac_address << item.attribute('value').to_s.gsub('-', ':')
+    childrens = item.parent.parent.element_children
+    
+    mac = childrens[1].content
+    rate = childrens[5].content
+
+    puts "#{mac}\t#{rate}"
+
+    mac_address << mac
+    rates << rate
+    
+    # puts item.parent.next_element
+    # ids << item.attribute('value').to_s
+    # mac_address << item.attribute('value').to_s.gsub('-', ':')
   end
-  browser.close
-  return mac_address
+
+  browser.close  
+  return mac_address, rates
 end
 
 def main
-  ip = ARGV.first
-  username = ARGV[1]
-  password = ARGV[2]
+  # ip = ARGV.first
+  username = ARGV[0]
+  password = ARGV[1]
   # puts ip
-  raise "ip not set" if ip.nil? or ip == ""
+  # raise "ip not set" if ip.nil? or ip == ""
   raise "username not set" if username.nil? or username == ""
   raise "password not set" if password.nil? or password == ""
-  puts search(ip, username, password)
+
+  ips = ["192.168.80.71", "192.168.80.72", "192.168.80.73", "192.168.80.74", "192.168.80.75"]
+  ips.each do |ip|
+    puts ip
+    search(ip, username, password)    
+  end
+  
 end
 
 if __FILE__ == $0

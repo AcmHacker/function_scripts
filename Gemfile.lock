@@ -6,6 +6,7 @@ GEM
     mini_portile2 (2.1.0)
     nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
+    phantomjs (2.1.1.0)
     rubyzip (1.2.0)
     selenium-webdriver (3.0.3)
       childprocess (~> 0.5)
@@ -20,6 +21,7 @@ PLATFORMS
 
 DEPENDENCIES
   nokogiri
+  phantomjs
   watir
 
 BUNDLED WITH
