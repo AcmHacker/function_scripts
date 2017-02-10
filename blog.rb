@@ -6,6 +6,10 @@ require 'net/http'
 redirect_blog_host = "www.acmhacker.com"
 blog_host = "127.0.0.1:4567"
 
+error do
+  "Sorry there was a nasty error"
+end
+
 get // do
   path = request.path_info
   uri = "http://#{redirect_blog_host}/#{path}"
